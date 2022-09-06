@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
+// Import BS first
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// ...then ./index.css later so that this is css runs on top of BS
 import './index.css';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
