@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
-import Dishdetail from './DishdetailComponent';
+// import Dishdetail from './DishdetailComponent';
 
 
 class Menu extends Component {
@@ -9,9 +9,6 @@ class Menu extends Component {
 
         super(props);
 
-        this.state = {
-            selectedDish: null
-        }
         console.log('Menu Component constructor is invoked');
     }
 
@@ -19,57 +16,54 @@ class Menu extends Component {
         console.log("Menu Component componentDidount is invoked")
     }
 
-    // Set state of selectedDish to a value (used for onClick event)
-    onDishSelect(dish) {
-
-        this.setState({ 
-            selectedDish: dish
-        });
-
-    }
-
     // 
-    renderDish(dish) {
+    // renderDish(dish) {
 
-        // If dish is null (or not selected/clicked), return div will be empty
-        if (dish != null) {
-            console.log("Dishdetail is invoked");
-            return (
-                // [Commented] Card here
-                // <Card>
-                //     <CardImg top width="100%" src={dish.image} alt={dish.name} />
-                //     <CardBody>
-                //         <CardTitle>{dish.name}</CardTitle>
-                //         <CardText>{dish.description}</CardText>
-                //     </CardBody>
-                // </Card>
+    //     // If dish is null (or not selected/clicked), return div will be empty
+    //     if (dish != null) {
+    //         console.log("Dishdetail is invoked");
+    //         return (
+    //             // [Commented] Card here
+    //             // <Card>
+    //             //     <CardImg top width="100%" src={dish.image} alt={dish.name} />
+    //             //     <CardBody>
+    //             //         <CardTitle>{dish.name}</CardTitle>
+    //             //         <CardText>{dish.description}</CardText>
+    //             //     </CardBody>
+    //             // </Card>
 
-                // Dishdetail Component with 'dish' prop here
-                <Dishdetail dish={dish} />
+    //             // Dishdetail Component with 'dish' prop here
+    //             // <Dishdetail dish={dish} />
 
 
-            );
+    //         );
 
-        } else {
+    //     } else {
 
-            return (
-                <div></div>
-            );
+    //         return (
+    //             <div></div>
+    //         );
 
-        }
-    }
+    //     }
+    // }
 
     render() {
 
+        // [Debug]
+        // var dishTest = this.props.dishes;
+
+
         // Making use of menu var to create component for each dish in this.state
         const menu = this.props.dishes.map((dish) => {
+            
+            console.log("Menu Comp. - Inside map - dish.id: ", dish.id);
 
             return (
-
+                
                 // key props helps React recognise each element to be rendered uniquely
                 <div className="col-12 col-md-5 m-1">
                     {/* Card */}
-                    <Card key={dish.id} onClick={() => this.onDishSelect(dish)}>
+                    <Card key={dish.id} onClick={()=> this.props.onClick(dish.id)}>
                         {/* Card image */}
                         <CardImg width="100%" src={dish.image} alt={dish.name} />
 
@@ -94,11 +88,6 @@ class Menu extends Component {
                 <div className="row">
                     {/* Media list - The menu */}
                     {menu}
-                </div>
-
-                <div className="row">
-                    {/* this component will be displayed conditionally */}
-                    {this.renderDish(this.state.selectedDish)}
                 </div>
 
             </div>
