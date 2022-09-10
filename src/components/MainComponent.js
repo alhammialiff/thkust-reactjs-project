@@ -19,7 +19,6 @@ class Main extends Component {
         // Eg. Declaring dishes in this.state (below) makes it available for Menu component to use it as props
         this.state = {
             dishes: DISHES,
-            // [Debugging in process]
             selectedDish: null
         };
 
@@ -35,7 +34,9 @@ class Main extends Component {
     }
 
     render() {
-        console.log("In Main - dish", this.state.dishes.filter((dish) => dish.id === this.state.selectedDish? dish: null)[0]);
+
+        // [Debug]
+        // console.log("In Main - dish", this.state.dishes.filter((dish) => dish.id === this.state.selectedDish? dish: null)[0]);
         
         return (
             <div>
