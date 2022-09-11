@@ -1,10 +1,11 @@
 // Main Component is the container component because it deals with the behaviour of the app
 
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand } from 'reactstrap';
 import Menu from './MenuComponent';
 import Dishdetail from './DishdetailComponent';
 import { DISHES } from '../shared/dishes';
+import Header from './HeaderComponent';
+import Footer from './FooterComponent';
 
 
 class Main extends Component {
@@ -40,13 +41,9 @@ class Main extends Component {
         
         return (
             <div>
-
-                {/* Navbar Component */}
-                <Navbar dark color="primary">
-                    <div className="container">
-                        <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
-                    </div>
-                </Navbar>
+                
+                {/* Header Component */}
+                <Header />
 
                 {/* Menu Component */}
                 <Menu dishes={this.state.dishes} 
@@ -54,7 +51,9 @@ class Main extends Component {
 
                 {/* Dish Details - with value of a filter function to filter out the selectedDish during onclick event */}
                 <Dishdetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish? dish: null)[0]} />
-            
+
+                {/* Footer Component */}
+                <Footer />
             </div>
         );
 

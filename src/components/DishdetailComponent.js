@@ -1,5 +1,7 @@
 // DishdetailComponents is now a presentation component via functional components
 // Functional Components cannot store local state, unlike Class Components
+// Functional Components cannot access lifecycle hooks
+
 
 import React, { Component } from 'react';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
@@ -197,7 +199,7 @@ function RenderDish({ dish }) {
                 </CardBody>
             </Card>
         );
-        
+
     }
 
 
