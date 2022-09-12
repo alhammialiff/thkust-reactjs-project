@@ -99,6 +99,7 @@ const Menu = (props) => {
 
             // key props helps React recognise each element to be rendered uniquely
             <div className="col-12 col-md-5 m-1">
+                {/* prop.onClick = MainComponent's () => this.onDishSelect(dishId)  */}
                 <RenderMenuItem dish={dish} onClick={props.onClick} />
             </div>
 
