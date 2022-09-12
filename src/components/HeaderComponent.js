@@ -16,6 +16,7 @@ class Header extends Component {
         this.toggleNav = this.toggleNav.bind(this);
     }
 
+    // Toggles nav collapse bar
     toggleNav(){
         this.setState({
             isNavOpen: !this.state.isNavOpen
@@ -28,6 +29,7 @@ class Header extends Component {
         return (
             <>
                 {/* Navbar Component */}
+                {/* expand="md" === navbar won't collapse on md to xl screens */}
                 <Navbar dark expand="md">
 
                     <div className="container">
@@ -60,7 +62,7 @@ class Header extends Component {
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink className="nav-link" to="/contactsus">
+                                    <NavLink className="nav-link" to="/contactus">
                                         <span className="fa fa-address-card fa-lg"></span> Contact Us
                                     </NavLink>
                                 </NavItem>
