@@ -9,6 +9,7 @@ import Dishdetail from './DishdetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Contact from './ContactComponent';
+import About from './AboutComponent';
 
 
 import { DISHES } from '../shared/dishes';
@@ -28,6 +29,7 @@ class Main extends Component {
         // other components (children) may serve as presentation components 
         // Eg. Declaring dishes in this.state (below) makes it available for Menu component to use it as props
         this.state = {
+
             dishes: DISHES,
             comments: COMMENTS,
             promotions: PROMOTIONS,
@@ -54,12 +56,26 @@ class Main extends Component {
 
         const HomePage = () => {
             return (
+
                 // Filter dish, promotions and leaders based on featured bool value true
                 <Home dish={this.state.dishes.filter((dish) => dish.featured)[0]}
                     promotions={this.state.promotions.filter((promo) => promo.featured)[0]}
                     leaders={this.state.leaders.filter((leader) => leader.featured)[0]}
                 />
+
             );
+        }
+
+        const DishWithId = ({match}) => {
+
+            console.log("In DishWithId - match:",match);
+
+            return (
+                <Dishdetail dish={this.state.dishes.filter((dish)=> dish.id === parseInt(match.params.dishId,10))[0]} 
+                            comments={this.state.comments.filter((comment)=> comment.dishId === parseInt(match.params.dishId,10))}
+                            />
+            );
+
         }
 
         return (
@@ -68,13 +84,22 @@ class Main extends Component {
                 {/* Header Component */}
                 <Header />
 
-
+                {/* Routes in switch should be listed in sequence of match */}
                 <Switch>
-                    {/* component={HomePage} => Passing in components without props */}
+                    {/* Home - component={HomePage} => Passing in components without props */}
                     <Route path="/home" component={HomePage} />
-                    {/* 1. exact === exact match no more no less | 2. Use arrow function to pass props to Menu Component */}
+
+                    {/* About Us - pass this.state.leaders as props to AboutComponent.js*/}
+                    <Route path="/aboutus" component={()=> <About leaders={this.state.leaders} />} />
+
+                    {/* Menu - 1. exact = exact match | 2. Use arrow function to pass props to Menu Component */}
                     <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} />
+                    
+                    {/* Menu /w Params - Route path with param that calls DishWithId functional component */}
+                    <Route path="/menu/:dishId" component={DishWithId} />
+
                     <Route exact path="/contactus" component={Contact} />
+
                     {/* Anything that doesn't match the above will be redirected to Home */}
                     <Redirect to="/home" />
                 </Switch>

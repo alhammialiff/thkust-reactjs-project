@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
 // import Dishdetail from './DishdetailComponent';
 
 // [Commented] For future ref when dealing with Class Component
@@ -66,17 +67,24 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 're
 
 function RenderMenuItem({ dish, onClick }) {
 
+    // [Debug]
+    console.log("In RenderMenuItem:", dish);
+
     return (
         <>
             {/* Card */}
-            <Card onClick={() => onClick(dish.id)}>
-                {/* Card image */}
-                <CardImg width="100%" src={dish.image} alt={dish.name} />
+            {/* <Card onClick={() => onClick(dish.id)}> */}
+            <Card>
+                {/* <Link> with params. is used to display individual dish (via dish.id) */}
+                <Link to={`/menu/${dish.id}`}>
+                    {/* Card image */}
+                    <CardImg width="100%" src={dish.image} alt={dish.name} />
 
-                {/* Card Image Overlay */}
-                <CardImgOverlay>
-                    <CardTitle> {dish.name}</CardTitle>
-                </CardImgOverlay>
+                    {/* Card Image Overlay */}
+                    <CardImgOverlay>
+                        <CardTitle> {dish.name}</CardTitle>
+                    </CardImgOverlay>
+                </Link>
             </Card>
         </>
     );
@@ -99,8 +107,9 @@ const Menu = (props) => {
 
             // key props helps React recognise each element to be rendered uniquely
             <div className="col-12 col-md-5 m-1">
-                {/* prop.onClick = MainComponent's () => this.onDishSelect(dishId)  */}
-                <RenderMenuItem dish={dish} onClick={props.onClick} />
+                {/* [Commented] prop.onClick = MainComponent's () => this.onDishSelect(dishId)  */}
+                {/* <RenderMenuItem dish={dish} onClick={props.onClick} /> */}
+                <RenderMenuItem dish={dish} />
             </div>
 
         );
@@ -111,7 +120,17 @@ const Menu = (props) => {
 
         // Menu Component to be returned
         <div className="container">
-
+            
+            <div className="row">
+                <Breadcrumb>
+                    <BreadcrumbItem><Link to='/home'>Home</Link></BreadcrumbItem>
+                    <BreadcrumbItem active>Menu</BreadcrumbItem>
+                </Breadcrumb>
+                <div className="col-12">
+                    <h3>Menu</h3>
+                    <hr/>
+                </div>
+            </div>
             <div className="row">
                 {/* Media list - The menu */}
                 {menu}

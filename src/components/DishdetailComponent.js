@@ -4,7 +4,10 @@
 
 
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
+
+
 
 // [Commented Class Dishdetail] For future ref
 // class Dishdetail extends Component {
@@ -173,11 +176,12 @@ function RenderComments({ dishComments }) {
         );
 
     }
+
 }
 
 // Props passed into Render Dish are enclosed with { } as an object
 function RenderDish({ dish }) {
-    
+
     // [Debug]
     console.log("In RenderDish - thisDish", dish);
 
@@ -213,7 +217,7 @@ const Dishdetail = (props) => {
     const thisDish = props.dish;
 
     // [Debug]
-    console.log("In Dishdetail - thisDish", thisDish); 
+    console.log("In Dishdetail - thisDish", props);
 
     // [Resolve] Display empty div when this.props.dish (thisDish) is undefined on first render
     if (thisDish === undefined) {
@@ -228,8 +232,23 @@ const Dishdetail = (props) => {
 
             // Return Dish Detail Component and Comment Section
             <div className="container">
-                <div className="row">
+                
+                {/* Row 1 - BreadCrumb */}
+                <Breadcrumb>
+                    <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
+                    <BreadcrumbItem active>{thisDish.name}</BreadcrumbItem>
+                </Breadcrumb>
 
+                {/* Row 2 - Dish Name Header */}
+                <div className="row">
+                    <div className="col-12">
+                        <h3>{thisDish.name}</h3>
+                        <hr />
+                    </div>
+                </div>
+
+                {/* Row 3 - Dish Detail and Comments */}
+                <div className="row">
                     {/* Dish Detail Card */}
                     <div className="col-12 col-md-5 m-1">
                         <RenderDish dish={thisDish} />
@@ -242,9 +261,8 @@ const Dishdetail = (props) => {
                                 <h4>Comments</h4>
                             </div>
                         </div>
-                        <RenderComments dishComments={thisDish.comments} />
+                        <RenderComments dishComments={props.comments} />
                     </div>
-
                 </div>
             </div>
 
