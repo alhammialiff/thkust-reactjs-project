@@ -5,7 +5,7 @@ import Dishdetail from './DishdetailComponent';
 
 function About(props) {
 
-    // Return 1x leader component
+    // Return 1x Leader Component
     const RenderLeader = ({ leader }) => {
         
         // [Debug]
@@ -37,7 +37,7 @@ function About(props) {
 
     }
 
-    // Return a list of leader components via .map(...)
+    // Return a list of Leader Coomponents via .map(...)
     const leaders = props.leaders.map((leader) => {
         
         return (
