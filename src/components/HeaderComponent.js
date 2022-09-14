@@ -128,6 +128,7 @@ class Header extends Component {
                         <Form onSubmit={this.handleLogin}>
                             <FormGroup>
                                 <Label htmlFor="username">Username</Label>
+                                {/* Using innerRef to pass a reference of  */}
                                 <Input type="text" id="username" name="username" innerRef={(input) => this.username = input}/>
                             </FormGroup>
                             <FormGroup>
