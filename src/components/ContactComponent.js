@@ -46,15 +46,20 @@ class Contact extends Component {
     }
 
     handleSubmit(event) {
+        
+        // [Debug]
         console.log("Current State is: " + JSON.stringify(this.state));
         alert("Current State is: " + JSON.stringify(this.state));
+        
         event.preventDefault();
+        
     }
 
     // Tracks any input field has been modified when component has 'lost focus'
     // This is called curried function. (See below for the normal function)
     handleBlur = (field) => (evt) => {
 
+        // [Debug]
         console.log("In handleBlur - ",{...this.state.touched, [field]: true});
 
         this.setState({
