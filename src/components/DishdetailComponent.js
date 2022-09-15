@@ -4,135 +4,166 @@
 
 
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Button, Modal, ModalBody, ModalHeader, Row, Col, Label } from 'reactstrap';
+import { Control, Errors, LocalForm} from 'react-redux-form';
 import { Link } from 'react-router-dom';
+import CommentForm from './CommentForm';
 
+// // [To remove after assignment 3] Validator function for 'Your Name' form field
+// const minLength = (length) => (inputVal) => (inputVal) && inputVal.length >= length;
+// const maxLength = (length) => (inputVal) => !(inputVal) || inputVal.length <= length;
 
-
-// [Commented Class Dishdetail] For future ref
-// class Dishdetail extends Component {
+// // [To remove after assignment 3] CommentForm Class Component
+// class CommentForm extends Component {
 
 //     constructor(props) {
 //         super(props);
 
-//     }
-
-
-//     componentDidMount() {
-//         console.log("Dishdetail Component componentDidMount is invoked")
-//     }
-
-//     componentDidUpdate() {
-//         console.log("Dishdetail Component componentDidUpdate is invoked")
-//     }
-
-//     renderComments(dishComments) {
-
-//         // Test print
-//         // console.log(dishComments.comments);
-
-//         // If dishComments is empty, return empty div
-//         if (dishComments == null) {
-
-//             return (
-//                 <div>
-//                 </div>
-//             );
-
-//         } else {
-
-//             // Return individual dish comments via .map(...)
-//             const eachComment = dishComments.comments.map((comment) => {
-//                 return (
-
-//                     <>
-//                         <li><p>{comment.comment}</p></li>
-//                         <li><p>--{comment.author},
-//                             {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' })
-//                                 .format(new Date(Date.parse(comment.date)))}</p></li>
-//                     </>
-
-//                 );
-//             })
-
-//             // return Comment Section
-//             return (
-
-//                 <div className="row">
-//                     <div className="col-12 col-md m-1">
-//                         <ul className="list-unstyled">
-//                             {eachComment}
-//                         </ul>
-//                     </div>
-//                 </div>
-
-//             );
+//         this.state = {
+//             isModalOpen: false
 //         }
 
+//         this.toggleModal = this.toggleModal.bind(this);
 
+//     }
 
+//     // Toggles Modal open state
+//     toggleModal() {
+//         this.setState({
+//             isModalOpen: !this.state.isModalOpen
+//         })
+
+//         console.log("In toggleModal - isModalOpen", this.state.isModalOpen);
+//     }
+
+//     // Submission handler for debug
+//     handleSubmit(values) {
+//         this.toggleModal();
+//         console.log("In handleSubmit - values", JSON.stringify(values));
 //     }
 
 //     render() {
 
-//         // Linking with 'dish' props with data that is passed by parent (MenuComponent.js)
-//         const thisDish = this.props.dish;
+//         return (
+//             <>
+//                 {/* Submit Comment Button */}
+//                 <Button outline onClick={this.toggleModal}>
+//                     <span className="fa fa-comment"></span> Submit Comment
+//                 </Button>
 
-//         // [Undefined] Dish details undefined
-//         //console.log("DishDetails - thisDish", thisDish === undefined ? true: false);
+//                 {/* Comment Form Modal */}
+//                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+//                     <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
+//                     <ModalBody>
+//                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
 
-//         // [Debug]
-//         console.log("Dishdetail Component render invoked")
+//                             {/* Rating */}
+//                             <Row className="form-group">
+//                                 <Col>
+//                                     {/* Rating Label */}
+//                                     <Row>
+//                                         <Col>
+//                                             <Label htmlFor="rating">Rating</Label>
+//                                         </Col>
+//                                     </Row>
+//                                     {/* Redux Control Select - Rating */}
+//                                     <Row>
+//                                         <Col>
+//                                             <Control.select
+//                                                 id="rating"
+//                                                 className="form-control"
+//                                                 model=".rating">
+//                                                 <option value="1">1</option>
+//                                                 <option value="2">2</option>
+//                                                 <option value="3">3</option>
+//                                                 <option value="4">4</option>
+//                                                 <option value="5">5</option>
+//                                             </Control.select>
+//                                         </Col>
+//                                     </Row>
+//                                 </Col>
+//                             </Row>
 
-//         // [Resolve] Display empty div when this.props.dish (thisDish) is undefined on first render
-//         if (thisDish === undefined) {
+//                             {/* Your Name */}
+//                             <Row className="form-group">
+//                                 <Col>
 
-//             return (
+//                                     {/* Commenter Name Label */}
+//                                     <Row>
+//                                         <Col>
+//                                             <Label>Your Name</Label>
+//                                         </Col>
+//                                     </Row>
 
-//                 <div></div>
-//             );
+//                                     {/* Redux Control Text - Username */}
+//                                     <Row>
+//                                         <Col>
+//                                             <Control.text
+//                                                 id="username"
+//                                                 className="form-control"
+//                                                 name="username"
+//                                                 model=".username"
+//                                                 validators={{
+//                                                     minLength: minLength(2),
+//                                                     maxLength: maxLength(15),
+//                                                 }
+//                                                 } />
 
-//         } else {
+//                                             {/* Error validation messages */}
+//                                             <Errors
+//                                                 className="text-danger"
+//                                                 model=".username"
+//                                                 show="touched"
+//                                                 messages={{
+//                                                     minLength: 'Must be greater than 2 characters',
+//                                                     maxLength: 'Must be 15 characters or less'
+//                                                 }} />
+//                                         </Col>
+//                                     </Row>
 
-//             return (
+//                                 </Col>
+//                             </Row>
 
-//                 // Return Dish Detail Component and Comment Section
-//                 <div className="container">
-//                     <div class="row">
-//                         {/* Dish Detail Card */}
-//                         <div className="col-12 col-md-5 m-1">
-//                             <Card key={thisDish.id}>
-//                                 <CardImg top width="100%" src={thisDish.image} alt={thisDish.name} />
-//                                 <CardBody>
-//                                     <CardTitle>{thisDish.name}</CardTitle>
-//                                     <CardText>{thisDish.description}</CardText>
-//                                 </CardBody>
-//                             </Card>
-//                         </div>
+//                             {/* Comment Box */}
+//                             <Row className="form-group">
 
-//                         {/* Comment Section */}
-//                         <div className="col-12 col-md-5 m-1">
-//                             <div className="row">
-//                                 <div className="col-12 col-md m-1">
-//                                     <h4>Comments</h4>
-//                                 </div>
-//                             </div>
-//                             {this.renderComments(thisDish)}
-//                         </div>
-//                     </div>
+//                                 <Col>
 
+//                                     {/* Comment Box Label */}
+//                                     <Row>
+//                                         <Col>
+//                                             <Label>Comment</Label>
+//                                         </Col>
+//                                     </Row>
 
-//                 </div>
+//                                     {/* Redux Control Textarea - Comment Box */}
+//                                     <Row>
+//                                         <Col>
+//                                             <Control.textarea
+//                                                 id="commentBox"
+//                                                 className="form-control"
+//                                                 name="commentBox"
+//                                                 model=".commentBox" />
+//                                         </Col>
+//                                     </Row>
 
-//             );
+//                                 </Col>
+//                             </Row>
+                            
+//                             {/* Submit Button */}
+//                             <Button type="submit" color="primary">Submit</Button>
 
-//         }
+//                         </LocalForm>
+//                     </ModalBody>
+//                 </Modal>
+
+//             </>
+//         );
 
 //     }
 
 // }
 
-// ===================
 
 function RenderComments({ dishComments }) {
 
@@ -170,7 +201,10 @@ function RenderComments({ dishComments }) {
             <div className="row">
                 <div className="col-12 col-md m-1">
                     {eachComment}
+                    {/* [Assignment 3] Add Submit Comment Button to pop up Comment Modal*/}
+                    <CommentForm />
                 </div>
+
             </div>
 
         );
@@ -232,7 +266,7 @@ const Dishdetail = (props) => {
 
             // Return Dish Detail Component and Comment Section
             <div className="container">
-                
+
                 {/* Row 1 - BreadCrumb */}
                 <Breadcrumb>
                     <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
