@@ -18,7 +18,9 @@ import About from './AboutComponent';
 // import { LEADERS } from '../shared/leaders';
 // import { PROMOTIONS } from '../shared/promotions';
 
-// Redux states - From this point onwards, this.state.x becomes this.props.x
+// mapStateToProps takes 'state' as first argument - From this point onwards, this.state.x becomes this.props.x
+// mapStateToProps will be called everytime Redux store state changes (It is passed as the first param. to Redux connect())
+// 'state' - works the same as store.getState()
 const mapStateToProps = state => {
     return {
         dishes: state.dishes,
@@ -66,6 +68,7 @@ class Main extends Component {
         // console.log("In Main - dish", this.state.dishes.filter((dish) => dish.id === this.state.selectedDish? dish: null)[0]);
 
         const HomePage = () => {
+
             return (
 
                 // Filter dish, promotions and leaders based on featured bool value true
@@ -77,9 +80,12 @@ class Main extends Component {
             );
         }
 
-        const DishWithId = ({ match }) => {
+        const DishWithId = ({ match, history, location }) => {
 
+            // [Debug | Practice] Router with parameters passes match, history and location props to component (DishWithId)
             console.log("In DishWithId - match:", match);
+            console.log("In DishWithId - history:", history);
+            console.log("In DishWithId - location:", location);
 
             return (
                 <Dishdetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]}
@@ -133,5 +139,6 @@ class Main extends Component {
 
 }
 
-// Export with Redux withRouter(connect(mapStateToProps)(Main))
+
+// connect's first argument should always take mapStateToProps as first argument
 export default withRouter(connect(mapStateToProps)(Main));
