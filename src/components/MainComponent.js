@@ -11,6 +11,7 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
+import { addComment } from '../redux/ActionCreators';
 
 // [Commented] Redux is used instead as the point of commenting
 // import { DISHES } from '../shared/dishes';
@@ -29,6 +30,13 @@ const mapStateToProps = state => {
         leaders: state.leaders
     }
 }
+
+// Redux Dispatcher
+const mapDispatchToProps = dispatch => ({
+    // addComment key is a function call that takes in the params below (dishId,rating...) and is supplied into Redux dispatch
+    addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment))
+
+});
 
 class Main extends Component {
 
@@ -83,13 +91,14 @@ class Main extends Component {
         const DishWithId = ({ match, history, location }) => {
 
             // [Debug | Practice] Router with parameters passes match, history and location props to component (DishWithId)
-            console.log("In DishWithId - match:", match);
-            console.log("In DishWithId - history:", history);
-            console.log("In DishWithId - location:", location);
+            // console.log("In DishWithId - match:", match);
+            // console.log("In DishWithId - history:", history);
+            // console.log("In DishWithId - location:", location);
 
             return (
                 <Dishdetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]}
-                    comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}
+                            comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}
+                            addComment={this.props.addComment}
                 />
             );
 
@@ -141,4 +150,6 @@ class Main extends Component {
 
 
 // connect's first argument should always take mapStateToProps as first argument
-export default withRouter(connect(mapStateToProps)(Main));
+// Once mapDispatchToProps is provided in connect(..), actions (addComments) will 
+// automatically be available for Main Component to use
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

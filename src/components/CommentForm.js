@@ -40,7 +40,9 @@ class CommentForm extends Component {
     // Submission handler for debug
     handleSubmit(values) {
         this.toggleModal();
-        console.log("In handleSubmit - values", JSON.stringify(values));
+        // console.log("In handleSubmit - values", JSON.stringify(values));
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        console.log("handleSubmit - this.props",this.props);
     }
 
     render() {
@@ -100,10 +102,10 @@ class CommentForm extends Component {
                                     <Row>
                                         <Col>
                                             <Control.text
-                                                id="username"
+                                                id="author"
                                                 className="form-control"
-                                                name="username"
-                                                model=".username"
+                                                name="author"
+                                                model=".author"
                                                 validators={{
                                                     minLength: minLength(2),
                                                     maxLength: maxLength(15),
@@ -113,7 +115,7 @@ class CommentForm extends Component {
                                             {/* Error validation messages */}
                                             <Errors
                                                 className="text-danger"
-                                                model=".username"
+                                                model=".author"
                                                 show="touched"
                                                 messages={{
                                                     minLength: 'Must be greater than 2 characters',
@@ -141,10 +143,10 @@ class CommentForm extends Component {
                                     <Row>
                                         <Col>
                                             <Control.textarea
-                                                id="commentBox"
+                                                id="comment"
                                                 className="form-control"
-                                                name="commentBox"
-                                                model=".commentBox" />
+                                                name="comment"
+                                                model=".comment" />
                                         </Col>
                                     </Row>
 

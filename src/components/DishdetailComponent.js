@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Button, Modal, ModalBody, ModalHeader, Row, Col, Label } from 'reactstrap';
-import { Control, Errors, LocalForm} from 'react-redux-form';
+import { Control, Errors, LocalForm } from 'react-redux-form';
 import { Link } from 'react-router-dom';
 import CommentForm from './CommentForm';
 
@@ -149,7 +149,7 @@ import CommentForm from './CommentForm';
 
 //                                 </Col>
 //                             </Row>
-                            
+
 //                             {/* Submit Button */}
 //                             <Button type="submit" color="primary">Submit</Button>
 
@@ -165,7 +165,7 @@ import CommentForm from './CommentForm';
 // }
 
 
-function RenderComments({ dishComments }) {
+function RenderComments({ dishComments, addComment, dishId }) {
 
     console.log("In RenderComments", dishComments)
 
@@ -195,6 +195,8 @@ function RenderComments({ dishComments }) {
 
         });
 
+        console.log("In RenderComments- addComment", addComment);
+
         // return Comment Section
         return (
 
@@ -202,7 +204,7 @@ function RenderComments({ dishComments }) {
                 <div className="col-12 col-md m-1">
                     {eachComment}
                     {/* [Assignment 3] Add Submit Comment Button to pop up Comment Modal*/}
-                    <CommentForm />
+                    <CommentForm dishId={dishId} addComment={addComment} />
                 </div>
 
             </div>
@@ -251,7 +253,7 @@ const Dishdetail = (props) => {
     const thisDish = props.dish;
 
     // [Debug]
-    console.log("In Dishdetail - thisDish", props);
+    // console.log("In Dishdetail - thisDish", props);
 
     // [Resolve] Display empty div when this.props.dish (thisDish) is undefined on first render
     if (thisDish === undefined) {
@@ -295,7 +297,9 @@ const Dishdetail = (props) => {
                                 <h4>Comments</h4>
                             </div>
                         </div>
-                        <RenderComments dishComments={props.comments} />
+                        <RenderComments dishComments={props.comments}
+                                        addComment={props.addComment}
+                                        dishId={props.dish.id} />
                     </div>
                 </div>
             </div>
