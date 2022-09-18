@@ -32,6 +32,7 @@ const mapStateToProps = state => {
 }
 
 // Redux Dispatcher
+// REMEMBER: COMPONENTS NEVER ACCESS THE STORE DIRECTLY, connect() DOES IT FOR US THROUGH dispatch()
 const mapDispatchToProps = dispatch => ({
     // addComment key is a function call that takes in the params below (dishId,rating...) and is supplied into Redux dispatch
     addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment))
@@ -122,6 +123,7 @@ class Main extends Component {
                     <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
 
                     {/* Menu /w Params - Route path with param that calls DishWithId functional component */}
+                    {/* In menu, if a component is interacted with (ie. onClick) and is found to have dishId, invoke DishWithId(...) */}
                     <Route path="/menu/:dishId" component={DishWithId} />
 
                     <Route exact path="/contactus" component={Contact} />

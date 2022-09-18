@@ -38,6 +38,7 @@ class CommentForm extends Component {
     }
 
     // Submission handler for debug
+    // 
     handleSubmit(values) {
         this.toggleModal();
         // console.log("In handleSubmit - values", JSON.stringify(values));
@@ -58,6 +59,7 @@ class CommentForm extends Component {
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
                     <ModalBody>
+                        {/* 'values' (object) is what is returned when Redux LocalForm detects input changes */}
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
 
                             {/* Rating */}

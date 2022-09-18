@@ -204,6 +204,7 @@ function RenderComments({ dishComments, addComment, dishId }) {
                 <div className="col-12 col-md m-1">
                     {eachComment}
                     {/* [Assignment 3] Add Submit Comment Button to pop up Comment Modal*/}
+                    {/* Redux Reducer addComment triggers creation of new CommentForm component whenever user hits submit */}
                     <CommentForm dishId={dishId} addComment={addComment} />
                 </div>
 
