@@ -8,7 +8,9 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrum
 import { Control, Errors, LocalForm } from 'react-redux-form';
 import { Link } from 'react-router-dom';
 import CommentForm from './CommentForm';
-import { Loading } from './LoadingComponent'
+import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
+
 
 // // [To remove after assignment 3] Validator function for 'Your Name' form field
 // const minLength = (length) => (inputVal) => (inputVal) && inputVal.length >= length;
@@ -233,7 +235,7 @@ function RenderDish({ dish }) {
 
         // Return Dish Detail Card Component
         return (
-            <Card key={dish.id}>
+            <Card key={baseUrl + dish.id}>
                 <CardImg top width="100%" src={dish.image} alt={dish.name} />
                 <CardBody>
                     <CardTitle>{dish.name}</CardTitle>

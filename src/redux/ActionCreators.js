@@ -3,6 +3,7 @@
 // Importing all export const as ActionTypes
 import * as ActionTypes from './ActionTypes';
 import { DISHES } from '../shared/dishes';
+import { baseUrl } from '../shared/baseUrl';
 
 
 // Redux Action Object - addComment
@@ -22,16 +23,22 @@ export const addComment = (dishId, rating, author, comment) => ({
 
 });
 
+// DISHES ACTION TYPES
 // Thunk function - This is a Thunk as it contains an inner function returning dispatch()
 export const fetchDishes = () => (dispatch) => {
 
     // First, Thunk function dispatches dishesLoading
     dispatch(dishesLoading(true));
 
-    setTimeout(() => {
-        // Second, Thunk function dispatches addDishes(DISHES) after two secs
-        dispatch(addDishes(DISHES));
-    }, 2000);
+    // [Commented] To simulate fetching from server
+    // setTimeout(() => {
+    //     // Second, Thunk function dispatches addDishes(DISHES) after two secs
+    //     dispatch(addDishes(DISHES));
+    // }, 2000);
+
+    return fetch(baseUrl + 'dishes')
+        .then(response => response.json())
+        .then(dishes => dispatch(addDishes(dishes)));
 
 }
 
@@ -51,3 +58,57 @@ export const addDishes = (dishes) => ({
     type: ActionTypes.ADD_DISHES,
     payload: dishes
 });
+
+// COMMENT ACTION TYPES
+// Thunk function - This is a Thunk as it contains an inner function returning dispatch()
+export const fetchComments = () => (dispatch) => {
+
+    return fetch(baseUrl + 'comments')
+        .then(response => response.json())
+        .then(comments => dispatch(addComments(comments)));
+
+}
+
+// Function meaning - Tell users comments failed to load
+export const commentsFailed = (errmess) => ({
+    type: ActionTypes.COMMENTS_FAILED,
+    payload: errmess
+});
+
+// Function meaning - Returns comments to be added
+export const addComments = (comments) => ({
+    type: ActionTypes.ADD_COMMENTS,
+    payload: comments
+});
+
+// PROMO ACTION TYPES
+// Thunk function - This is a Thunk as it contains an inner function returning dispatch()
+export const fetchPromos = () => (dispatch) => {
+
+    // First, Thunk function dispatches promosLoading
+    dispatch(promosLoading(true));
+
+    return fetch(baseUrl + 'promotions')
+        .then(response => response.json())
+        .then(promos => dispatch(addPromos(promos)));
+
+}
+
+// Function meaning - Tell users promos are loading and wait till it is loaded
+export const promosLoading = () => ({
+    type: ActionTypes.PROMOS_LOADING,
+});
+
+// Function meaning - Tell users promos failed to load
+export const promosFailed = (errmess) => ({
+    type: ActionTypes.PROMOS_FAILED,
+    payload: errmess
+});
+
+// Function meaning - Returns promos to be added
+export const addPromos = (promos) => ({
+    type: ActionTypes.ADD_PROMOS,
+    payload: promos
+});
+
+

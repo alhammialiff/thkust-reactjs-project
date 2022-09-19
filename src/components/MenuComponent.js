@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 // import Dishdetail from './DishdetailComponent';
 
@@ -80,7 +81,7 @@ function RenderMenuItem({ dish, onClick }) {
                 {/* <Link> with params. is used to display individual dish (via dish.id) */}
                 <Link to={`/menu/${dish.id}`}>
                     {/* Card image */}
-                    <CardImg width="100%" src={dish.image} alt={dish.name} />
+                    <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
 
                     {/* Card Image Overlay */}
                     <CardImgOverlay>
