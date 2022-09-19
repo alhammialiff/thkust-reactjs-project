@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
+
 // import Dishdetail from './DishdetailComponent';
 
 // [Commented] For future ref when dealing with Class Component
@@ -98,7 +100,7 @@ function RenderMenuItem({ dish, onClick }) {
 const Menu = (props) => {
 
     // Making use of menu var to create component for each dish in this.state
-    const menu = props.dishes.map((dish) => {
+    const menu = props.dishes.dishes.map((dish) => {
 
         // [Debug]
         // console.log("Menu Comp. - Inside map - dish.id: ", dish.id);
@@ -116,30 +118,51 @@ const Menu = (props) => {
 
     });
 
-    return (
-
-        // Menu Component to be returned
-        <div className="container">
-            
-            <div className="row">
-                <Breadcrumb>
-                    <BreadcrumbItem><Link to='/home'>Home</Link></BreadcrumbItem>
-                    <BreadcrumbItem active>Menu</BreadcrumbItem>
-                </Breadcrumb>
-                <div className="col-12">
-                    <h3>Menu</h3>
-                    <hr/>
+    if (props.dishes.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
                 </div>
             </div>
-            <div className="row">
-                {/* Media list - The menu */}
-                {menu}
+        );
+
+    } else if (props.dishes.errMess) {
+
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.dishes.errMess}</h4>
+                </div>
+            </div>
+        );
+    } else {
+        return (
+
+            // Menu Component to be returned
+            <div className="container">
+
+                <div className="row">
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to='/home'>Home</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>Menu</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>Menu</h3>
+                        <hr />
+                    </div>
+                </div>
+                <div className="row">
+                    {/* Media list - The menu */}
+                    {menu}
+                </div>
+
             </div>
 
-        </div>
 
+        );
+    }
 
-    );
 
 }
 

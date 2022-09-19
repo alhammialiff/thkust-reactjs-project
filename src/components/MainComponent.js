@@ -11,7 +11,8 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
-import { addComment } from '../redux/ActionCreators';
+import { addComment, fetchDishes } from '../redux/ActionCreators';
+import { actions } from 'react-redux-form';
 
 // [Commented] Redux is used instead as the point of commenting
 // import { DISHES } from '../shared/dishes';
@@ -21,21 +22,37 @@ import { addComment } from '../redux/ActionCreators';
 
 // mapStateToProps takes 'state' as first argument - From this point onwards, this.state.x becomes this.props.x
 // mapStateToProps will be called everytime Redux store state changes (It is passed as the first param. to Redux connect())
-// 'state' - works the same as store.getState()
+// 'state' - works the same as store.getState() and is retrieved from combined reducers in configureStore.js
 const mapStateToProps = state => {
+
+    // [Debug]
+    console.log("state.dishes - ", state.dishes)
+
     return {
+        // This is mapping of redux store to individual actions
+        // [ Confusion Resolved ] The name 'state.dishes' is defined in configureStore.js
+        // Eg. To access dishes object - this.props.dishes.dishes
+        // Why dishes.dishes? Because 'dishes' is an object property in 'state' object
+        //                    Like wise, isLoading and errMess are objects properties in 'state' object
         dishes: state.dishes,
         comments: state.comments,
         promotions: state.promotions,
         leaders: state.leaders
     }
+
 }
 
 // Redux Dispatcher
 // REMEMBER: COMPONENTS NEVER ACCESS THE STORE DIRECTLY, connect() DOES IT FOR US THROUGH dispatch()
 const mapDispatchToProps = dispatch => ({
     // addComment key is a function call that takes in the params below (dishId,rating...) and is supplied into Redux dispatch
-    addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment))
+    addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
+
+    // After the point Main Component is mounted, fetchDishes will be called and this results
+    // in a call to fetch the dishes and then load it into Redux Store. Following this, the dishes
+    // will be available for Main Component to use
+    fetchDishes: () => { dispatch(fetchDishes()) },
+    resetFeedbackForm: () => { dispatch(actions.reset('feedback')) }
 
 });
 
@@ -71,6 +88,12 @@ class Main extends Component {
 
     // }
 
+    // When MainComponent is mounted in view, fetchDishes will be invoked and load 
+    componentDidMount() {
+        // Invoke redux action fetchDishes()
+        this.props.fetchDishes();
+    }
+
     render() {
 
         // [Debug]
@@ -81,7 +104,9 @@ class Main extends Component {
             return (
 
                 // Filter dish, promotions and leaders based on featured bool value true
-                <Home dish={this.props.dishes.filter((dish) => dish.featured)[0]}
+                <Home dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
+                    dishesLoading={this.props.dishes.isLoading}
+                    dishesErrMess={this.props.dishes.errMess}
                     promotions={this.props.promotions.filter((promo) => promo.featured)[0]}
                     leaders={this.props.leaders.filter((leader) => leader.featured)[0]}
                 />
@@ -97,9 +122,11 @@ class Main extends Component {
             // console.log("In DishWithId - location:", location);
 
             return (
-                <Dishdetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]}
-                            comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}
-                            addComment={this.props.addComment}
+                <Dishdetail dish={this.props.dishes.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]}
+                    isLoading={this.props.dishes.isLoading}
+                    isErrMess={this.props.dishes.errMess}
+                    comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}
+                    addComment={this.props.addComment}
                 />
             );
 
@@ -126,7 +153,7 @@ class Main extends Component {
                     {/* In menu, if a component is interacted with (ie. onClick) and is found to have dishId, invoke DishWithId(...) */}
                     <Route path="/menu/:dishId" component={DishWithId} />
 
-                    <Route exact path="/contactus" component={Contact} />
+                    <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm}/> } />
 
                     {/* Anything that doesn't match the above will be redirected to Home */}
                     <Redirect to="/home" />

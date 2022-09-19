@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 
 import { Breadcrumb, BreadcrumbItem, Button, Label, Col, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Control, Form, Errors, actions } from 'react-redux-form';
 
 // Validation functions - val = user input
 const required = (val) => val && val.length;
@@ -68,6 +68,8 @@ class Contact extends Component {
         // [Debug]
         console.log("Current State is: " + JSON.stringify(values));
         alert("Current State is: " + JSON.stringify(values));
+
+        this.props.resetFeedbackForm();
 
         // event.preventDefault();
 
@@ -183,7 +185,7 @@ class Contact extends Component {
                     <div className="col-12 col-md-9">
 
                         {/* Form */}
-                        <LocalForm onSubmit={(values, form) => this.handleSubmit(values)}>
+                        <Form model="feedback" onSubmit={(values, form) => this.handleSubmit(values)}>
                             <Row className="form-group">
 
                             </Row>
@@ -358,7 +360,7 @@ class Contact extends Component {
                                 </Col>
                             </Row>
 
-                        </LocalForm>
+                        </Form>
                     </div>
                 </div>
             </div>

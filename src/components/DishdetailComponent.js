@@ -8,6 +8,7 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrum
 import { Control, Errors, LocalForm } from 'react-redux-form';
 import { Link } from 'react-router-dom';
 import CommentForm from './CommentForm';
+import { Loading } from './LoadingComponent'
 
 // // [To remove after assignment 3] Validator function for 'Your Name' form field
 // const minLength = (length) => (inputVal) => (inputVal) && inputVal.length >= length;
@@ -252,12 +253,31 @@ function RenderDish({ dish }) {
 const Dishdetail = (props) => {
 
     const thisDish = props.dish;
-
     // [Debug]
     // console.log("In Dishdetail - thisDish", props);
 
+    if (props.isLoading) {
+
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
+        );
+
+    } else if (props.errMess) {
+
+        return (
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+
     // [Resolve] Display empty div when this.props.dish (thisDish) is undefined on first render
-    if (thisDish === undefined) {
+    } else if (thisDish === undefined) {
 
         return (
             <div></div>
@@ -299,8 +319,8 @@ const Dishdetail = (props) => {
                             </div>
                         </div>
                         <RenderComments dishComments={props.comments}
-                                        addComment={props.addComment}
-                                        dishId={props.dish.id} />
+                            addComment={props.addComment}
+                            dishId={props.dish.id} />
                     </div>
                 </div>
             </div>
