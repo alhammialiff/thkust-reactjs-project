@@ -23,7 +23,7 @@ export const addComment = (dishId, rating, author, comment) => ({
 
 });
 
-// DISHES ACTION TYPES
+// [DISHES ACTION TYPES]
 // Thunk function - This is a Thunk as it contains an inner function returning dispatch()
 export const fetchDishes = () => (dispatch) => {
 
@@ -37,8 +37,24 @@ export const fetchDishes = () => (dispatch) => {
     // }, 2000);
 
     return fetch(baseUrl + 'dishes')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                // Handling response from server that may be an error
+                var error = new Error('Error' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            // Handling error if no response from the server at all 
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
         .then(response => response.json())
-        .then(dishes => dispatch(addDishes(dishes)));
+        .then(dishes => dispatch(addDishes(dishes)))
+        .catch(error => dispatch(dishesFailed(error.message)));
 
 }
 
@@ -59,13 +75,29 @@ export const addDishes = (dishes) => ({
     payload: dishes
 });
 
-// COMMENT ACTION TYPES
+// [COMMENT ACTION TYPES]
 // Thunk function - This is a Thunk as it contains an inner function returning dispatch()
 export const fetchComments = () => (dispatch) => {
 
     return fetch(baseUrl + 'comments')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                // Handling response from server that may be an error
+                var error = new Error('Error' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            // Handling error if no response from the server at all 
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
         .then(response => response.json())
-        .then(comments => dispatch(addComments(comments)));
+        .then(comments => dispatch(addComments(comments)))
+        .catch(error => dispatch(commentsFailed(error.message)));
 
 }
 
@@ -81,7 +113,7 @@ export const addComments = (comments) => ({
     payload: comments
 });
 
-// PROMO ACTION TYPES
+// [PROMO ACTION TYPES]
 // Thunk function - This is a Thunk as it contains an inner function returning dispatch()
 export const fetchPromos = () => (dispatch) => {
 
@@ -89,8 +121,24 @@ export const fetchPromos = () => (dispatch) => {
     dispatch(promosLoading(true));
 
     return fetch(baseUrl + 'promotions')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                // Handling response from server that may be an error
+                var error = new Error('Error' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            // Handling error if no response from the server at all 
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+        })
         .then(response => response.json())
-        .then(promos => dispatch(addPromos(promos)));
+        .then(promos => dispatch(addPromos(promos)))
+        .catch(error => dispatch(promosFailed(error.message)));
 
 }
 
