@@ -69,7 +69,7 @@ class Header extends Component {
 
                         {/* Navbar Brand */}
                         <NavbarBrand className="mr-auto" href="/">
-                            <img src='assets/images/logo.png' height="30" width="41" alt="Ristorante Con Fusion" />
+                            <img src='/assets/images/logo.png' height="30" width="41" alt="Ristorante Con Fusion" />
                         </NavbarBrand>
 
                         {/* Navbar Links - Collapse for xs and sm screen */}
