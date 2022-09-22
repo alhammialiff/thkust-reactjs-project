@@ -9,6 +9,7 @@ export const Promotions = (state = {
 }, action) => {
 
     switch (action.type) {
+
         case ActionTypes.ADD_PROMOS:
             // Return previous state plus new state
             return { ...state, isLoading: false, errMess: null, promotions: action.payload }
@@ -20,6 +21,7 @@ export const Promotions = (state = {
             return { ...state, isLoading: false, errMess: action.payload, promotions: [] }
         default:
             return state
+            
     }
 
 }

@@ -21,118 +21,23 @@ class Contact extends Component {
     constructor(props) {
         super(props);
 
-        // [Comment] To make way for Redux Form Exercise
-        // this.state = {
-        //     firstname: '',
-        //     lastname: '',
-        //     telnum: '',
-        //     email: '',
-        //     agree: false,
-        //     contactType: 'Tel.',
-        //     message: '',
-        //     // Tracking mechanism to see if input has been changed/updated or not
-        //     touched: {
-        //         firstname: false,
-        //         lastname: false,
-        //         telnum: false,
-        //         email: false
-        //     }
-        // }
-
         // Like an arrow function that is passed in props
         this.handleSubmit = this.handleSubmit.bind(this);
 
-        // [Commented] To make way for Redux Form Exercise
-        // this.handleInputChange = this.handleInputChange.bind(this);
-        // this.handleBlur = this.handleBlur.bind(this);
-
     }
 
-    // [Comment] To make way for Redux Form Exercise
-    // handleInputChange(event) {
-    //     const target = event.target;
-    //     const value = target.type === 'checkbox' ? target.checked : target.value;
-    //     const name = target.name;
-
-    //     console.log("target var - ", target);
-
-    //     // Set state of event.target.name : event.target.value (target: value)
-    //     // Eg. If there is any input (Eg. Alhammi) in firstname, setState will result in => firstname:'Alhammi' 
-    //     this.setState({
-    //         [name]: value
-    //     })
-    // }
 
     handleSubmit(values) {
 
         // [Debug]
-        console.log("Current State is: " + JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
-
+        // console.log("Current State is: " + JSON.stringify(values));
+        // alert("Current State is: " + JSON.stringify(values));
+        this.props.postFeedback(values.firstname, values.lastname, values.telnum, values.email, values.agree,values.contactType, values.message);
         this.props.resetFeedbackForm();
 
         // event.preventDefault();
 
     }
-
-    // [Commented] Tracks any input field has been modified when component has 'lost focus'
-    // This is called curried function. (See below for the normal function)
-    // handleBlur = (field) => (evt) => {
-
-    //     // [Debug]
-    //     console.log("In handleBlur - ", { ...this.state.touched, [field]: true });
-
-    //     this.setState({
-    //         touched: { ...this.state.touched, [field]: true }
-    //     });
-
-    // }
-
-    // [For ref only] Curried function in non-arrow form
-    // handleBlur(field){
-    //     return function(evt){
-    //         this.setState({
-    //             touched: { ...this.state.touched, [field]: true }
-    //         })
-    //     }
-    // }
-
-    // [Commented] To make for React Redux Form Exercise
-    // validate(firstname, lastname, telnum, email) {
-    //     const errors = {
-    //         firstname: '',
-    //         lastname: '',
-    //         telnum: '',
-    //         email: ''
-    //     };
-
-    //     // First name & last name validation 
-    //     if (this.state.touched.firstname && firstname.length < 3) {
-    //         errors.firstname = 'First Name should be >= 3 characters';
-    //     } else if (this.state.touched.firstname && firstname.length > 10) {
-    //         errors.firstname = 'First Name should be <= 10 characters';
-    //     } else if (this.state.touched.lastname && lastname.length < 3) {
-    //         errors.lastname = 'First Name should be >= 3 characters';
-    //     } else if (this.state.touched.lastname && lastname.length > 10) {
-    //         errors.lastname = 'First Name should be <= 10 characters';
-    //     }
-
-    //     // Regex for tel validation = All string chars should be numbers and nothing else
-    //     const reg = /^\d+$/;
-
-    //     // Tel validation
-    //     if (this.state.touched.telnum && !reg.test(telnum)) {
-    //         errors.telnum = 'Telephone no. should contain only number';
-    //     }
-
-    //     // Email validation
-    //     if (this.state.touched.email && email.split('').filter(x => x === '@').length !== 1) {
-    //         errors.email = 'Please type in a valid email address';
-    //     }
-
-    //     return errors;
-
-    // }
 
     render() {
         // [Commented] To make way for React Redux Form

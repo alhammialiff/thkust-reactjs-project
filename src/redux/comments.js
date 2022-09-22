@@ -21,9 +21,7 @@ export const Comments = (state = {
 
         case ActionTypes.ADD_COMMENT:
             var comment = action.payload;
-            comment.id = state.comments.length;
             // comment.id = comment.dishId;
-            comment.date = new Date().toISOString();
             // Concat pushes a new element to that 
             // array but new object is created
             console.log("Comment: ", comment)

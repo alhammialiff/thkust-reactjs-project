@@ -2,24 +2,32 @@ import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Dishdetail from './DishdetailComponent';
+import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+
 
 function About(props) {
 
     // Return 1x Leader Component
     const RenderLeader = ({ leader }) => {
-        
+
+        // [Debug]
+        // Note: leader.image = /images/alberto.png 
+        //       baseUrl + leader.image = http://localhost:3001/images/alberto.png (We are fetching image from json server)
+        console.log("leader.image - " + baseUrl + leader.image);
         // [Debug]
         // console.log("In RenderLeader - leader:", leader)
 
-        
+
         return (
 
             <div className="row">
 
-                <div key={leader.id} className="col-12 mt-5">
+                <div key={baseUrl + leader.id} className="col-12 mt-5">
+
                     <Media>
                         <Media left middle>
-                            <Media object src={leader.image} alt={leader.name} />
+                            <Media object src={baseUrl + leader.image} alt={leader.name} />
                         </Media>
                         <Media>
                             <Media body className="ml-5">
@@ -29,7 +37,10 @@ function About(props) {
                             </Media>
                         </Media>
                     </Media>
+
+
                 </div>
+
 
             </div>
 
@@ -37,12 +48,20 @@ function About(props) {
 
     }
 
-    // Return a list of Leader Coomponents via .map(...)
-    const leaders = props.leaders.map((leader) => {
-        
+    // [Debug]
+    console.log("About - props.leaders - ", props.leaders.leaders);
+
+    // Return a list of Leader Components via .map(...)
+    const leaders = props.leaders.leaders.map((leader) => {
+
         return (
             // <p>Leader {leader.name}</p>
-            <RenderLeader leader={leader} />
+            <Stagger in>
+                <Fade in>
+                    <RenderLeader leader={leader} />
+                </Fade>
+            </Stagger>
+
         );
     });
 

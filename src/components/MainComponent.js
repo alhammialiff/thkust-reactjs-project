@@ -11,8 +11,9 @@ import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Contact from './ContactComponent';
 import About from './AboutComponent';
-import { addComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
+import { postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders, postFeedback } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 // [Commented] Redux is used instead as the point of commenting
 // import { DISHES } from '../shared/dishes';
@@ -46,7 +47,8 @@ const mapStateToProps = state => {
 // REMEMBER: COMPONENTS NEVER ACCESS THE STORE DIRECTLY, connect() DOES IT FOR US THROUGH dispatch()
 const mapDispatchToProps = dispatch => ({
     // addComment key is a function call that takes in the params below (dishId,rating...) and is supplied into Redux dispatch
-    addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
+    postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
+    postFeedback: (firstname, lastname, telnum, email, agree, contactType, message) => dispatch(postFeedback(firstname, lastname, telnum, email, agree, contactType, message)),
 
     // After the point Main Component is mounted, fetchDishes will be called and this results
     // in a call to fetch the dishes and then load it into Redux Store. Following this, the dishes
@@ -54,7 +56,8 @@ const mapDispatchToProps = dispatch => ({
     fetchDishes: () => { dispatch(fetchDishes()) },
     resetFeedbackForm: () => { dispatch(actions.reset('feedback')) },
     fetchComments: () => { dispatch(fetchComments()) },
-    fetchPromos: () => { dispatch(fetchPromos()) }
+    fetchPromos: () => { dispatch(fetchPromos()) },
+    fetchLeaders: () => { dispatch(fetchLeaders()) }
 
 });
 
@@ -96,6 +99,7 @@ class Main extends Component {
         this.props.fetchDishes();
         this.props.fetchComments();
         this.props.fetchPromos();
+        this.props.fetchLeaders();
     }
 
     render() {
@@ -104,6 +108,9 @@ class Main extends Component {
         // console.log("In Main - dish", this.state.dishes.filter((dish) => dish.id === this.state.selectedDish? dish: null)[0]);
 
         const HomePage = () => {
+            // [Debug]
+            // console.log("this.prop.dishes - ", this.props.dishes);
+            // console.log("this.prop.dishes.dishes - ", this.props.dishes.dishes);
 
             return (
 
@@ -114,7 +121,9 @@ class Main extends Component {
                     promotions={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
                     promosLoading={this.props.promotions.isLoading}
                     promosErrMess={this.props.promotions.errMess}
-                    leaders={this.props.leaders.filter((leader) => leader.featured)[0]}
+                    leaders={this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
+                    leadersLoading={this.props.leaders.isLoading}
+                    leadersErrMess={this.props.leaders.errMess}
                 />
 
             );
@@ -133,7 +142,7 @@ class Main extends Component {
                     errMess={this.props.dishes.errMess}
                     comments={this.props.comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId, 10))}
                     commentsErrMess={this.props.comments.errMess}
-                    addComment={this.props.addComment}
+                    postComment={this.props.postComment}
                 />
             );
 
@@ -144,27 +153,31 @@ class Main extends Component {
 
                 {/* Header Component */}
                 <Header />
+                <TransitionGroup>
+                    {/* CSS Animation - React Router passes match, lcoation and history props to each component */}
+                    <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
+                        {/* Routes in switch should be listed in sequence of match */}
+                        <Switch>
+                            {/* Home - component={HomePage} => Passing in components without props */}
+                            <Route path="/home" component={HomePage} />
 
-                {/* Routes in switch should be listed in sequence of match */}
-                <Switch>
-                    {/* Home - component={HomePage} => Passing in components without props */}
-                    <Route path="/home" component={HomePage} />
+                            {/* About Us - pass this.state.leaders as props to AboutComponent.js*/}
+                            <Route path="/aboutus" component={() => <About leaders={this.props.leaders} />} />
 
-                    {/* About Us - pass this.state.leaders as props to AboutComponent.js*/}
-                    <Route path="/aboutus" component={() => <About leaders={this.props.leaders} />} />
+                            {/* Menu - 1. exact = exact match | 2. Use arrow function to pass props to Menu Component */}
+                            <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
 
-                    {/* Menu - 1. exact = exact match | 2. Use arrow function to pass props to Menu Component */}
-                    <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
+                            {/* Menu /w Params - Route path with param that calls DishWithId functional component */}
+                            {/* In menu, if a component is interacted with (ie. onClick) and is found to have dishId, invoke DishWithId(...) */}
+                            <Route path="/menu/:dishId" component={DishWithId} />
 
-                    {/* Menu /w Params - Route path with param that calls DishWithId functional component */}
-                    {/* In menu, if a component is interacted with (ie. onClick) and is found to have dishId, invoke DishWithId(...) */}
-                    <Route path="/menu/:dishId" component={DishWithId} />
+                            <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} postFeedback={this.props.postFeedback}/>} />
 
-                    <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm}/> } />
-
-                    {/* Anything that doesn't match the above will be redirected to Home */}
-                    <Redirect to="/home" />
-                </Switch>
+                            {/* Anything that doesn't match the above will be redirected to Home */}
+                            <Redirect to="/home" />
+                        </Switch>
+                    </CSSTransition>
+                </TransitionGroup>
 
                 {/* [Commented] Menu Component */}
                 {/* <Menu dishes={this.state.dishes} 

@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import CommentForm from './CommentForm';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
-
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 // // [To remove after assignment 3] Validator function for 'Your Name' form field
 // const minLength = (length) => (inputVal) => (inputVal) && inputVal.length >= length;
@@ -168,7 +168,7 @@ import { baseUrl } from '../shared/baseUrl';
 // }
 
 
-function RenderComments({ dishComments, addComment, dishId }) {
+function RenderComments({ dishComments, postComment, dishId }) {
 
     console.log("In RenderComments", dishComments)
 
@@ -188,17 +188,21 @@ function RenderComments({ dishComments, addComment, dishId }) {
             return (
 
                 <ul key={comment.id} className="list-unstyled">
-                    <li><p>{comment.comment}</p></li>
-                    <li><p>--{comment.author},
-                        {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' })
-                            .format(new Date(Date.parse(comment.date)))}</p></li>
+                    <Stagger in>
+                        <Fade in>
+                            <li><p>{comment.comment}</p></li>
+                            <li><p>--{comment.author},
+                                {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' })
+                                    .format(new Date(Date.parse(comment.date)))}</p></li>
+                        </Fade>
+                    </Stagger>
                 </ul>
 
             );
 
         });
 
-        console.log("In RenderComments- addComment", addComment);
+        console.log("In RenderComments- addComment", postComment);
 
         // return Comment Section
         return (
@@ -207,8 +211,8 @@ function RenderComments({ dishComments, addComment, dishId }) {
                 <div className="col-12 col-md m-1">
                     {eachComment}
                     {/* [Assignment 3] Add Submit Comment Button to pop up Comment Modal*/}
-                    {/* Redux Reducer addComment triggers creation of new CommentForm component whenever user hits submit */}
-                    <CommentForm dishId={dishId} addComment={addComment} />
+                    {/* Redux Reducer postComment triggers creation of new CommentForm component whenever user hits submit */}
+                    <CommentForm dishId={dishId} postComment={postComment} />
                 </div>
 
             </div>
@@ -235,13 +239,20 @@ function RenderDish({ dish }) {
 
         // Return Dish Detail Card Component
         return (
-            <Card key={baseUrl + dish.id}>
-                <CardImg top width="100%" src={baseUrl + dish.image} alt={dish.name} />
-                <CardBody>
-                    <CardTitle>{dish.name}</CardTitle>
-                    <CardText>{dish.description}</CardText>
-                </CardBody>
-            </Card>
+            // FadeTransform - React animation component
+            <FadeTransform in transformProps={{
+                exitTransform: 'scale(0.5) translateY(-50%)'
+            }}>
+
+                <Card key={baseUrl + dish.id}>
+                    <CardImg top width="100%" src={baseUrl + dish.image} alt={dish.name} />
+                    <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>
+
+            </FadeTransform>
         );
 
     }
@@ -278,7 +289,7 @@ const Dishdetail = (props) => {
             </div>
         );
 
-    // [Resolve] Display empty div when this.props.dish (thisDish) is undefined on first render
+        // [Resolve] Display empty div when this.props.dish (thisDish) is undefined on first render
     } else if (thisDish === undefined) {
 
         return (
@@ -321,7 +332,7 @@ const Dishdetail = (props) => {
                             </div>
                         </div>
                         <RenderComments dishComments={props.comments}
-                            addComment={props.addComment}
+                            postComment={props.postComment}
                             dishId={props.dish.id} />
                     </div>
                 </div>

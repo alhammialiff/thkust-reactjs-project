@@ -30,11 +30,13 @@ class CommentForm extends Component {
 
     // Toggles Modal open state
     toggleModal() {
+
         this.setState({
             isModalOpen: !this.state.isModalOpen
         })
 
         console.log("In toggleModal - isModalOpen", this.state.isModalOpen);
+        
     }
 
     // Submission handler for debug
@@ -42,7 +44,7 @@ class CommentForm extends Component {
     handleSubmit(values) {
         this.toggleModal();
         // console.log("In handleSubmit - values", JSON.stringify(values));
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
         console.log("handleSubmit - this.props",this.props);
     }
 
